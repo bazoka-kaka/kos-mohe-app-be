@@ -6,30 +6,27 @@ const roomSchema = new Schema({
     type: String,
     required: true,
   },
-  quantity: {
-    type: Number,
-    required: true,
-  },
   price: {
     type: Number,
     required: true,
   },
-  people: {
+  quantity: {
     type: Number,
+    default: 0,
     required: true,
   },
-  features: {
-    type: Array,
-    required: true,
-  },
-  detail: {
-    type: Array,
+  capacity: {
+    type: Number,
+    default: 0,
     required: true,
   },
   featured: {
     type: Boolean,
+    default: false,
     required: true,
   },
+  features: Array,
+  detail: Array,
 });
 
 module.exports = mongoose.model("Room", roomSchema);
