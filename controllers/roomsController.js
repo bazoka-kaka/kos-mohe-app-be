@@ -16,10 +16,13 @@ const createNewRoom = async (req, res) => {
       name: req.body.name,
       price: req.body.price,
       quantity: req.body?.quantity,
-      capacity: req.body?.capacity,
-      featured: req.body?.featured,
-      features: req.body?.features,
-      detail: req.body?.detail,
+      description: req.body?.description,
+      features: {
+        ac: req.body?.ac === "ya",
+        kmandi: req.body?.kmandi,
+        capacity: req.body?.capacity,
+        featured: req.body?.featured === "ya",
+      },
     });
 
     res.status(201).json(result);
@@ -42,10 +45,11 @@ const updateRoom = async (req, res) => {
   if (req.body?.name) room.name = req.body.name;
   if (req.body?.price) room.price = req.body.price;
   if (req.body?.quantity) room.quantity = req.body.quantity;
-  if (req.body?.capacity) room.capacity = req.body.capacity;
-  if (req.body?.featured) room.featured = req.body.featured;
-  if (req.body?.features) room.features = req.body.features;
-  if (req.body?.detail) room.detail = req.body.detail;
+  if (req.body?.description) room.description = req.body.description;
+  if (req.body?.ac) room.features.ac = req.body.ac === "ya";
+  if (req.body?.kmandi) room.features.kmandi = req.body.kmandi;
+  if (req.body?.capacity) room.features.capacity = req.body.capacity;
+  if (req.body?.featured) room.features.featured = req.body.featured === "ya";
   const result = await room.save();
   res.json(result);
 };
