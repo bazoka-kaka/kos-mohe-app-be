@@ -18,10 +18,10 @@ const createNewRoom = async (req, res) => {
       quantity: req.body?.quantity,
       description: req.body?.description,
       features: {
-        ac: req.body?.ac === "ya",
+        ac: req.body?.ac,
         kmandi: req.body?.kmandi,
         capacity: req.body?.capacity,
-        featured: req.body?.featured === "ya",
+        featured: req.body?.featured,
       },
     });
 
@@ -46,10 +46,10 @@ const updateRoom = async (req, res) => {
   if (req.body?.price) room.price = req.body.price;
   if (req.body?.quantity) room.quantity = req.body.quantity;
   if (req.body?.description) room.description = req.body.description;
-  if (req.body?.ac) room.features.ac = req.body.ac === "ya";
+  if (req.body?.ac) room.features.ac = req.body.ac;
   if (req.body?.kmandi) room.features.kmandi = req.body.kmandi;
   if (req.body?.capacity) room.features.capacity = req.body.capacity;
-  if (req.body?.featured) room.features.featured = req.body.featured === "ya";
+  if (req.body?.featured) room.features.featured = req.body.featured;
   const result = await room.save();
   res.json(result);
 };
