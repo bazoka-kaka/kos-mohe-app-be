@@ -44,6 +44,7 @@ const updateUser = async (req, res) => {
       .json({ message: `No user matches ID ${req.params.id}.` });
   }
   if (req.body?.fullname) user.fullname = req.body.fullname;
+  if (req.body?.phone) user.phone = req.body.phone;
   if (req.body?.offers !== null) user.notifications.offers = req.body.offers;
   if (req.body?.orderStatus !== null)
     user.notifications.orderStatus = req.body.orderStatus;
