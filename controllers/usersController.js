@@ -44,6 +44,10 @@ const updateUser = async (req, res) => {
       .json({ message: `No user matches ID ${req.params.id}.` });
   }
   if (req.body?.fullname) user.fullname = req.body.fullname;
+  if (req.body?.offers !== null) user.notifications.offers = req.body.offers;
+  if (req.body?.orderStatus !== null)
+    user.notifications.orderStatus = req.body.orderStatus;
+  if (req.body?.updates !== null) user.notifications.updates = req.body.updates;
   if (req.body?.email) {
     // check for duplicate usernames in the db
     const duplicate = await User.findOne({ email: req.body.email }).exec();
@@ -55,6 +59,7 @@ const updateUser = async (req, res) => {
     const hashedPwd = await bcrypt.hash(req.body.pwd, 10);
     user.password = hashedPwd;
   }
+  console.log(req.body, user.notifications);
   const result = await user.save();
   res.json(result);
 };

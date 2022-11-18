@@ -22,6 +22,20 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  notifications: {
+    offers: {
+      type: Boolean,
+      default: true,
+    },
+    orderStatus: {
+      type: Boolean,
+      default: true,
+    },
+    updates: {
+      type: Boolean,
+      default: true,
+    },
+  },
   refreshToken: String,
 });
 
