@@ -55,7 +55,13 @@ const updateUser = async (req, res) => {
     if (duplicate) return res.sendStatus(409); //Conflict
     user.email = req.body.email;
   }
-  if (req.body?.pwd) {
+  if (req.body?.pwd && req.body?.oldPwd) {
+    // check the old password
+    const match = await bcrypt.compare(req.body.oldPwd, user.password);
+    if (!match) {
+      console.log("incorrect old password");
+      return res.sendStatus(401);
+    }
     //encrypt the password
     const hashedPwd = await bcrypt.hash(req.body.pwd, 10);
     user.password = hashedPwd;
