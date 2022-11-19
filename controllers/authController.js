@@ -47,7 +47,8 @@ const handleLogin = async (req, res) => {
 
     // Send authorization roles and access token to user
     const fullname = foundUser.fullname;
-    res.json({ roles, fullname, accessToken });
+    const id = foundUser.id;
+    res.json({ id, roles, fullname, accessToken });
   } else {
     res.sendStatus(401);
   }
