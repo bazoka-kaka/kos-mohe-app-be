@@ -45,10 +45,12 @@ const updateUser = async (req, res) => {
   }
   if (req.body?.fullname) user.fullname = req.body.fullname;
   if (req.body?.phone) user.phone = req.body.phone;
-  if (req.body?.offers !== null) user.notifications.offers = req.body.offers;
-  if (req.body?.orderStatus !== null)
+  if (req.body?.offers !== null && req.body?.offers !== undefined)
+    user.notifications.offers = req.body.offers;
+  if (req.body?.orderStatus !== null && req.body?.orderStatus !== undefined)
     user.notifications.orderStatus = req.body.orderStatus;
-  if (req.body?.updates !== null) user.notifications.updates = req.body.updates;
+  if (req.body?.updates !== null && req.body?.updates !== undefined)
+    user.notifications.updates = req.body.updates;
   if (req.body?.email) {
     // check for duplicate usernames in the db
     const duplicate = await User.findOne({ email: req.body.email }).exec();
