@@ -34,4 +34,6 @@ router
 
 router.route("/:id").get(roomsController.getRoom);
 
+router.route("/images/:id").get(roomsController.getRoomImage);
+
 module.exports = router;

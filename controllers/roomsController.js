@@ -100,10 +100,53 @@ const getRoom = async (req, res) => {
   res.json(room);
 };
 
+const getRoomImage = async (req, res) => {
+  if (!req?.params?.id)
+    return res.status(400).json({ message: "Room ID required." });
+
+  const room = await Room.findOne({ _id: req.params.id }).exec();
+  if (!room) {
+    return res
+      .status(204)
+      .json({ message: `No room matches ID ${req.params.id}.` });
+  }
+  const b64 = Buffer.from(room.image.data).toString("base64");
+  const mimetype = room.image.mimetype;
+  let content = fs.readFileSync(
+    path.join(__dirname, "..", "public", "img", "uploads", room.image.filename)
+  );
+  if (!content) {
+    fs.writeFileSync(
+      path.join(
+        __dirname,
+        "..",
+        "public",
+        "img",
+        "uploads",
+        room.image.filename
+      ),
+      b64
+    );
+    content = fs.readFileSync(
+      path.join(
+        __dirname,
+        "..",
+        "public",
+        "img",
+        "uploads",
+        room.image.filename
+      )
+    );
+  }
+  res.writeHead(200, { "Content-Type": mimetype });
+  res.end(content, "utf-8");
+};
+
 module.exports = {
   getAllRooms,
   createNewRoom,
   updateRoom,
   deleteRoom,
   getRoom,
+  getRoomImage,
 };
