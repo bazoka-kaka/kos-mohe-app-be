@@ -46,6 +46,7 @@ app.use("/logout", require("./routes/logout"));
 
 app.use("/rooms", require("./routes/api/rooms"));
 app.use("/users", require("./routes/api/users"));
+app.use("/facilities", require("./routes/api/facilities"));
 app.use(verifyJWT);
 
 app.all("*", (req, res) => {
