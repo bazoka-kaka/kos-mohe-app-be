@@ -45,6 +45,13 @@ const updateUser = async (req, res) => {
       .status(204)
       .json({ message: `No user matches ID ${req.params.id}.` });
   }
+  if (req?.file) {
+    user.image.data = fs.readFileSync(
+      path.join(__dirname, "..", "public", "img", "uploads", req.file.filename)
+    );
+    user.image.filename = req.file.filename;
+    user.image.mimetype = req.file.mimetype;
+  }
   if (req.body?.fullname) user.fullname = req.body.fullname;
   if (req.body?.phone) user.phone = req.body.phone;
   if (req.body?.offers !== null && req.body?.offers !== undefined)
@@ -71,6 +78,28 @@ const updateUser = async (req, res) => {
     user.password = hashedPwd;
   }
   console.log(req.body, user.notifications);
+  const result = await user.save();
+  res.json(result);
+};
+
+const updateUserImage = async (req, res) => {
+  if (!req?.params?.id) {
+    return res.status(400).json({ message: "ID parameter is required." });
+  }
+
+  const user = await User.findOne({ _id: req.params.id }).exec();
+  if (!user) {
+    return res
+      .status(204)
+      .json({ message: `No user matches ID ${req.params.id}.` });
+  }
+  if (req?.file) {
+    user.image.data = fs.readFileSync(
+      path.join(__dirname, "..", "public", "img", "uploads", req.file.filename)
+    );
+    user.image.filename = req.file.filename;
+    user.image.mimetype = req.file.mimetype;
+  }
   const result = await user.save();
   res.json(result);
 };
@@ -125,4 +154,5 @@ module.exports = {
   getUser,
   getUserImage,
   updateUser,
+  updateUserImage,
 };
