@@ -1,5 +1,7 @@
 const User = require("../model/User");
 const bcrypt = require("bcrypt");
+const fs = require("fs");
+const path = require("path");
 
 const getAllUsers = async (req, res) => {
   const users = await User.find();
@@ -73,9 +75,54 @@ const updateUser = async (req, res) => {
   res.json(result);
 };
 
+const getUserImage = async (req, res) => {
+  if (!req?.params?.id)
+    return res.status(400).json({ message: "User ID required." });
+
+  const user = await User.findOne({ _id: req.params.id }).exec();
+  if (!user) {
+    return res
+      .status(204)
+      .json({ message: `No user matches ID ${req.params.id}.` });
+  }
+  const b64 = Buffer.from(user.image.data, "base64");
+  const mimetype = user.image.mimetype;
+  if (
+    !fs.existsSync(
+      path.join(
+        __dirname,
+        "..",
+        "public",
+        "img",
+        "uploads",
+        user.image.filename
+      )
+    )
+  ) {
+    fs.writeFileSync(
+      path.join(
+        __dirname,
+        "..",
+        "public",
+        "img",
+        "uploads",
+        user.image.filename
+      ),
+      b64
+    );
+  }
+  const content = fs.readFileSync(
+    path.join(__dirname, "..", "public", "img", "uploads", user.image.filename)
+  );
+
+  res.writeHead(200, { "Content-Type": mimetype });
+  res.end(content, "utf-8");
+};
+
 module.exports = {
   getAllUsers,
   deleteUser,
   getUser,
+  getUserImage,
   updateUser,
 };
