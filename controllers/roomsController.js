@@ -110,12 +110,20 @@ const getRoomImage = async (req, res) => {
       .status(204)
       .json({ message: `No room matches ID ${req.params.id}.` });
   }
-  const b64 = Buffer.from(room.image.data).toString("base64");
+  const b64 = Buffer.from(room.image.data, "base64");
   const mimetype = room.image.mimetype;
-  let content = fs.readFileSync(
-    path.join(__dirname, "..", "public", "img", "uploads", room.image.filename)
-  );
-  if (!content) {
+  if (
+    !fs.existsSync(
+      path.join(
+        __dirname,
+        "..",
+        "public",
+        "img",
+        "uploads",
+        room.image.filename
+      )
+    )
+  ) {
     fs.writeFileSync(
       path.join(
         __dirname,
@@ -127,17 +135,11 @@ const getRoomImage = async (req, res) => {
       ),
       b64
     );
-    content = fs.readFileSync(
-      path.join(
-        __dirname,
-        "..",
-        "public",
-        "img",
-        "uploads",
-        room.image.filename
-      )
-    );
   }
+  const content = fs.readFileSync(
+    path.join(__dirname, "..", "public", "img", "uploads", room.image.filename)
+  );
+
   res.writeHead(200, { "Content-Type": mimetype });
   res.end(content, "utf-8");
 };
