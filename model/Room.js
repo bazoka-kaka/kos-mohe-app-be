@@ -16,16 +16,20 @@ const roomSchema = new Schema({
     required: true,
   },
   description: String,
-  // image: {
-  //   fileName: {
-  //     type: String,
-  //     required: true,
-  //   },
-  //   file: {
-  //     type: Buffer,
-  //     required: true,
-  //   },
-  // },
+  image: {
+    data: {
+      type: Buffer,
+      required: true,
+    },
+    filename: {
+      type: String,
+      required: true,
+    },
+    mimetype: {
+      type: String,
+      required: true,
+    },
+  },
   features: {
     ac: {
       type: Boolean,

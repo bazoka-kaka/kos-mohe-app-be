@@ -1,4 +1,6 @@
 const Room = require("../model/Room");
+const fs = require("fs");
+const path = require("path");
 
 const getAllRooms = async (req, res) => {
   const rooms = await Room.find();
@@ -7,13 +9,30 @@ const getAllRooms = async (req, res) => {
 };
 
 const createNewRoom = async (req, res) => {
-  if (!req?.body?.name || !req?.body?.price) {
-    return res.status(400).json({ message: "Name and price are required" });
+  console.log(req?.file);
+  if (!req?.body?.name || !req?.body?.price || !req?.file) {
+    return res
+      .status(400)
+      .json({ message: "Name image and price are required" });
   }
 
   try {
     const result = await Room.create({
       name: req.body.name,
+      image: {
+        data: fs.readFileSync(
+          path.join(
+            __dirname,
+            "..",
+            "public",
+            "img",
+            "uploads",
+            req.file.filename
+          )
+        ),
+        filename: req.file.filename,
+        mimetype: req.file.mimetype,
+      },
       price: req.body.price,
       quantity: req.body?.quantity,
       description: req.body?.description,
