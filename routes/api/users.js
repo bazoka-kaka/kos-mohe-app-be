@@ -40,6 +40,7 @@ router
 router
   .route("/images/:id")
   .get(usersController.getUserImage)
-  .put(upload.single("image"), usersController.updateUserImage);
+  .put(upload.single("image"), usersController.updateUserImage)
+  .delete(usersController.deleteUserImage);
 
 module.exports = router;

@@ -104,6 +104,26 @@ const updateUserImage = async (req, res) => {
   res.json(result);
 };
 
+const deleteUserImage = async (req, res) => {
+  if (!req?.params?.id) {
+    return res.status(400).json({ message: "ID parameter is required." });
+  }
+
+  const user = await User.findOne({ _id: req.params.id }).exec();
+  if (!user) {
+    return res
+      .status(204)
+      .json({ message: `No user matches ID ${req.params.id}.` });
+  }
+  user.image.data = fs.readFileSync(
+    path.join(__dirname, "..", "public", "img", "profile.png")
+  );
+  user.image.filename = "profile.png";
+  user.image.mimetype = "image/png";
+  const result = await user.save();
+  res.json(result);
+};
+
 const getUserImage = async (req, res) => {
   if (!req?.params?.id)
     return res.status(400).json({ message: "User ID required." });
@@ -155,4 +175,5 @@ module.exports = {
   getUserImage,
   updateUser,
   updateUserImage,
+  deleteUserImage,
 };
