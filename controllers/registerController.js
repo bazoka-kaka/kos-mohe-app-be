@@ -1,5 +1,7 @@
 const User = require("../model/User");
 const bcrypt = require("bcrypt");
+const fs = require("fs");
+const path = require("path");
 
 const handleNewUser = async (req, res) => {
   const { fullname, email, pwd, phone } = req.body;
@@ -19,6 +21,13 @@ const handleNewUser = async (req, res) => {
     //create and store the new user
     const result = await User.create({
       email: email,
+      image: {
+        data: fs.readFileSync(
+          path.join(__dirname, "..", "public", "img", "profile.png")
+        ),
+        filename: "profile.png",
+        mimetype: "image/png",
+      },
       phone: phone,
       fullname: fullname,
       password: hashedPwd,

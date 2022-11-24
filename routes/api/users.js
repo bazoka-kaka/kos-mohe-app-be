@@ -23,4 +23,6 @@ router
   )
   .put(usersController.updateUser);
 
+router.route("/images/:id").get(usersController.getUserImage);
+
 module.exports = router;
