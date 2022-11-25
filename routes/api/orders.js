@@ -17,6 +17,6 @@ router
   )
   .delete(verifyRoles(ROLES_LIST.Admin), ordersController.deleteOrder);
 
-router.route("/:id").get(ordersController.getOrder);
+router.route("/:id").get(ordersController.getUserOrders);
 
 module.exports = router;

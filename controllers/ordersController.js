@@ -78,6 +78,12 @@ const deleteOrder = async (req, res) => {
   res.json(result);
 };
 
+const getUserOrders = async (req, res) => {
+  const orders = await Order.find({ user_id: req.params.id });
+  if (!orders) return res.status(204).json({ message: "No orders found." });
+  res.json(orders);
+};
+
 const getOrder = async (req, res) => {
   if (!req?.params?.id)
     return res.status(400).json({ message: "Order ID required." });
@@ -97,4 +103,5 @@ module.exports = {
   updateOrder,
   deleteOrder,
   getOrder,
+  getUserOrders,
 };
