@@ -10,6 +10,10 @@ const orderSchema = new Schema({
     type: String,
     required: true,
   },
+  name: {
+    type: String,
+    required: true,
+  },
   duration: {
     type: Number,
     required: true,
@@ -25,6 +29,11 @@ const orderSchema = new Schema({
   end_date: {
     type: Date,
     required: true,
+  },
+  paid: {
+    type: Boolean,
+    required: true,
+    default: false,
   },
 });
 
