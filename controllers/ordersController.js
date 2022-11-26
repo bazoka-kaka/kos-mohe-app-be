@@ -67,6 +67,23 @@ const updateOrder = async (req, res) => {
   if (req.body?.begin_date) order.begin_date = req.body.begin_date;
   if (req.body?.end_date) order.end_date = req.body.end_date;
   if (req.body?.paid) order.paid = req.body.paid;
+  if (req.body?.verified) order.verified = req.body.verified;
+  const result = await order.save();
+  res.json(result);
+};
+
+const verifyOrder = async (req, res) => {
+  if (!req?.body?.id) {
+    return res.status(400).json({ message: "ID parameter is required." });
+  }
+
+  const order = await Order.findOne({ _id: req.body.id }).exec();
+  if (!order) {
+    return res
+      .status(204)
+      .json({ message: `No order matches ID ${req.body.id}.` });
+  }
+  order.verified = true;
   const result = await order.save();
   res.json(result);
 };
@@ -152,6 +169,7 @@ module.exports = {
   getAllOrders,
   createNewOrder,
   updateOrder,
+  verifyOrder,
   deleteOrder,
   getOrder,
   getUserOrders,
