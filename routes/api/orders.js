@@ -32,6 +32,10 @@ router
   )
   .delete(verifyRoles(ROLES_LIST.Admin), ordersController.deleteOrder);
 
+router
+  .route("/admin")
+  .put(verifyRoles(ROLES_LIST.Admin), ordersController.verifyOrder);
+
 router.route("/:id").get(ordersController.getUserOrders);
 
 router.route("/images/:id").get(ordersController.getOrderImage);
