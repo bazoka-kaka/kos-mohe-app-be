@@ -56,9 +56,20 @@ const deleteNotification = async (req, res) => {
   res.json(result);
 };
 
+const deleteNotifications = async (req, res) => {
+  if (!req?.params?.id)
+    return res.status(400).json({ message: "User ID required." });
+
+  const result = await Notification.deleteMany({
+    user_id: req.params.id,
+  }).exec();
+  res.json(result);
+};
+
 module.exports = {
   getAllNotifications,
   getAllUserNotifications,
   createNewNotification,
   deleteNotification,
+  deleteNotifications,
 };
