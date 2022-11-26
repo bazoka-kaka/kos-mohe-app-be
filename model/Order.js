@@ -14,6 +14,11 @@ const orderSchema = new Schema({
     type: String,
     required: true,
   },
+  image: {
+    data: Buffer,
+    mimetype: String,
+    filename: String,
+  },
   duration: {
     type: Number,
     required: true,
@@ -31,6 +36,11 @@ const orderSchema = new Schema({
     required: true,
   },
   paid: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  verified: {
     type: Boolean,
     required: true,
     default: false,
