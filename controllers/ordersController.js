@@ -52,6 +52,13 @@ const updateOrder = async (req, res) => {
       .status(204)
       .json({ message: `No order matches ID ${req.body.id}.` });
   }
+  if (req?.file) {
+    order.image.data = fs.readFileSync(
+      path.join(__dirname, "..", "public", "img", "uploads", req.file.filename)
+    );
+    order.image.filename = req.file.filename;
+    order.image.mimetype = req.file.mimetype;
+  }
   if (req.body?.name) order.name = req.body.name;
   if (req.body?.user_id) order.user_id = req.body.user_id;
   if (req.body?.room_id) order.room_id = req.body.room_id;
@@ -97,6 +104,50 @@ const getOrder = async (req, res) => {
   res.json(order);
 };
 
+const getOrderImage = async (req, res) => {
+  if (!req?.params?.id)
+    return res.status(400).json({ message: "Order ID required." });
+
+  const order = await Order.findOne({ _id: req.params.id }).exec();
+  if (!order) {
+    return res
+      .status(204)
+      .json({ message: `No order matches ID ${req.params.id}.` });
+  }
+  const b64 = Buffer.from(order.image.data, "base64");
+  const mimetype = order.image.mimetype;
+  if (
+    !fs.existsSync(
+      path.join(
+        __dirname,
+        "..",
+        "public",
+        "img",
+        "uploads",
+        order.image.filename
+      )
+    )
+  ) {
+    fs.writeFileSync(
+      path.join(
+        __dirname,
+        "..",
+        "public",
+        "img",
+        "uploads",
+        order.image.filename
+      ),
+      b64
+    );
+  }
+  const content = fs.readFileSync(
+    path.join(__dirname, "..", "public", "img", "uploads", order.image.filename)
+  );
+
+  res.writeHead(200, { "Content-Type": mimetype });
+  res.end(content, "utf-8");
+};
+
 module.exports = {
   getAllOrders,
   createNewOrder,
@@ -104,4 +155,5 @@ module.exports = {
   deleteOrder,
   getOrder,
   getUserOrders,
+  getOrderImage,
 };
