@@ -1,13 +1,13 @@
 {
-  "name": "15tut",
+  "name": "kos-mohe-be",
   "version": "1.0.0",
-  "description": "MongoDB tutorial",
+  "description": "Backend server for Kos Mohe Application",
   "main": "server.js",
   "scripts": {
     "start": "node server",
     "dev": "nodemon server"
   },
-  "author": "Dave Gray",
+  "author": "bazoka-kaka",
   "license": "ISC",
   "engines": {
     "node": "14.x"
