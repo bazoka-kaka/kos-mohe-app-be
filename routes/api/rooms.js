@@ -29,10 +29,12 @@ router
   .put(
     verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),
     roomsController.updateRoom
-  )
-  .delete(verifyRoles(ROLES_LIST.Admin), roomsController.deleteRoom);
+  );
 
-router.route("/:id").get(roomsController.getRoom);
+router
+  .route("/:id")
+  .get(roomsController.getRoom)
+  .delete(roomsController.deleteRoom);
 
 router.route("/images/:id").get(roomsController.getRoomImage);
 

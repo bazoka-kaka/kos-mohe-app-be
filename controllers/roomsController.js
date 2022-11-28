@@ -74,10 +74,10 @@ const updateRoom = async (req, res) => {
 };
 
 const deleteRoom = async (req, res) => {
-  if (!req?.body?.id)
+  if (!req?.params?.id)
     return res.status(400).json({ message: "Room ID required." });
 
-  const room = await Room.findOne({ _id: req.body.id }).exec();
+  const room = await Room.findOne({ _id: req.params.id }).exec();
   if (!room) {
     return res
       .status(204)
