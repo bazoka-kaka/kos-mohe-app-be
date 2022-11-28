@@ -12,6 +12,7 @@ const createNewOrder = async (req, res) => {
   if (
     !req?.body?.name ||
     !req?.body?.user_id ||
+    !req?.body?.user_name ||
     !req?.body?.room_id ||
     !req?.body?.duration ||
     !req?.body?.total_price ||
@@ -20,7 +21,7 @@ const createNewOrder = async (req, res) => {
   ) {
     return res.status(400).json({
       message:
-        "Name, user_id, room_id, duration, total_price, begin_date, end_date are required",
+        "Name, user_id, user_name, room_id, duration, total_price, begin_date, end_date are required",
     });
   }
 
@@ -28,6 +29,7 @@ const createNewOrder = async (req, res) => {
     const result = await Order.create({
       name: req.body.name,
       user_id: req.body.user_id,
+      user_name: req.body.user_name,
       room_id: req.body.room_id,
       duration: req.body.duration,
       total_price: req.body.total_price,
@@ -61,6 +63,7 @@ const updateOrder = async (req, res) => {
   }
   if (req.body?.name) order.name = req.body.name;
   if (req.body?.user_id) order.user_id = req.body.user_id;
+  if (req.body?.user_name) order.user_name = req.body.user_name;
   if (req.body?.room_id) order.room_id = req.body.room_id;
   if (req.body?.total_price) order.total_price = req.body.total_price;
   if (req.body?.duration) order.duration = req.body.duration;
