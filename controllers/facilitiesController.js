@@ -67,19 +67,19 @@ const createNewFacility = async (req, res) => {
 //   res.json(result);
 // };
 
-// const deleteRoom = async (req, res) => {
-//   if (!req?.body?.id)
-//     return res.status(400).json({ message: "Room ID required." });
+const deleteFacility = async (req, res) => {
+  if (!req?.params?.id)
+    return res.status(400).json({ message: "Facility ID required." });
 
-//   const room = await Room.findOne({ _id: req.body.id }).exec();
-//   if (!room) {
-//     return res
-//       .status(204)
-//       .json({ message: `No room matches ID ${req.body.id}.` });
-//   }
-//   const result = await room.deleteOne(); //{ _id: req.body.id }
-//   res.json(result);
-// };
+  const facility = await Facility.findOne({ _id: req.params.id }).exec();
+  if (!facility) {
+    return res
+      .status(204)
+      .json({ message: `No facility matches ID ${req.params.id}.` });
+  }
+  const result = await facility.deleteOne(); //{ _id: req.body.id }
+  res.json(result);
+};
 
 const getFacility = async (req, res) => {
   if (!req?.params?.id)
@@ -149,7 +149,7 @@ module.exports = {
   getAllFacilities,
   createNewFacility,
   // updateRoom,
-  // deleteRoom,
+  deleteFacility,
   getFacility,
   getFacilityImage,
 };
