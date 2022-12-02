@@ -73,6 +73,29 @@ const updateRoom = async (req, res) => {
   res.json(result);
 };
 
+const updateRoomImage = async (req, res) => {
+  console.log(req?.params?.id);
+  if (!req?.params?.id) {
+    return res.status(400).json({ message: "ID parameter is required." });
+  }
+
+  const room = await Room.findOne({ _id: req.params.id }).exec();
+  if (!room) {
+    return res
+      .status(204)
+      .json({ message: `No room matches ID ${req.params.id}.` });
+  }
+  if (req?.file) {
+    room.image.data = fs.readFileSync(
+      path.join(__dirname, "..", "public", "img", "uploads", req.file.filename)
+    );
+    room.image.filename = req.file.filename;
+    room.image.mimetype = req.file.mimetype;
+  }
+  const result = await room.save();
+  res.json(result);
+};
+
 const deleteRoom = async (req, res) => {
   if (!req?.params?.id)
     return res.status(400).json({ message: "Room ID required." });
@@ -148,6 +171,7 @@ module.exports = {
   getAllRooms,
   createNewRoom,
   updateRoom,
+  updateRoomImage,
   deleteRoom,
   getRoom,
   getRoomImage,

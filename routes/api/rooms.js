@@ -27,7 +27,7 @@ router
     roomsController.createNewRoom
   )
   .put(
-    verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),
+    // verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),
     roomsController.updateRoom
   );
 
@@ -36,6 +36,9 @@ router
   .get(roomsController.getRoom)
   .delete(roomsController.deleteRoom);
 
-router.route("/images/:id").get(roomsController.getRoomImage);
+router
+  .route("/images/:id")
+  .get(roomsController.getRoomImage)
+  .put(upload.single("image"), roomsController.updateRoomImage);
 
 module.exports = router;
