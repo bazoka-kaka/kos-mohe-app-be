@@ -44,28 +44,24 @@ const createNewFacility = async (req, res) => {
   }
 };
 
-// const updateRoom = async (req, res) => {
-//   if (!req?.body?.id) {
-//     return res.status(400).json({ message: "ID parameter is required." });
-//   }
+const updateFacility = async (req, res) => {
+  console.log(req?.body);
+  if (!req?.body?.id) {
+    return res.status(400).json({ message: "ID parameter is required." });
+  }
 
-//   const room = await Room.findOne({ _id: req.body.id }).exec();
-//   if (!room) {
-//     return res
-//       .status(204)
-//       .json({ message: `No room matches ID ${req.body.id}.` });
-//   }
-//   if (req.body?.name) room.name = req.body.name;
-//   if (req.body?.price) room.price = req.body.price;
-//   if (req.body?.quantity) room.quantity = req.body.quantity;
-//   if (req.body?.description) room.description = req.body.description;
-//   if (req.body?.ac) room.features.ac = req.body.ac;
-//   if (req.body?.kmandi) room.features.kmandi = req.body.kmandi;
-//   if (req.body?.capacity) room.features.capacity = req.body.capacity;
-//   if (req.body?.featured) room.features.featured = req.body.featured;
-//   const result = await room.save();
-//   res.json(result);
-// };
+  const facility = await Facility.findOne({ _id: req.body.id }).exec();
+  if (!facility) {
+    return res
+      .status(204)
+      .json({ message: `No facility matches ID ${req.body.id}.` });
+  }
+  if (req.body?.name) facility.name = req.body.name;
+  if (req.body?.description) facility.description = req.body.description;
+  if (req.body?.features) facility.features = req.body.features;
+  const result = await facility.save();
+  res.json(result);
+};
 
 const deleteFacility = async (req, res) => {
   if (!req?.params?.id)
@@ -145,10 +141,34 @@ const getFacilityImage = async (req, res) => {
   res.end(content, "utf-8");
 };
 
+const updateFacilityImage = async (req, res) => {
+  console.log(req?.params?.id);
+  if (!req?.params?.id) {
+    return res.status(400).json({ message: "ID parameter is required." });
+  }
+
+  const facility = await Facility.findOne({ _id: req.params.id }).exec();
+  if (!facility) {
+    return res
+      .status(204)
+      .json({ message: `No facility matches ID ${req.params.id}.` });
+  }
+  if (req?.file) {
+    facility.image.data = fs.readFileSync(
+      path.join(__dirname, "..", "public", "img", "uploads", req.file.filename)
+    );
+    facility.image.filename = req.file.filename;
+    facility.image.mimetype = req.file.mimetype;
+  }
+  const result = await facility.save();
+  res.json(result);
+};
+
 module.exports = {
   getAllFacilities,
   createNewFacility,
-  // updateRoom,
+  updateFacility,
+  updateFacilityImage,
   deleteFacility,
   getFacility,
   getFacilityImage,

@@ -18,21 +18,27 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.route("/").get(facilitiesController.getAllFacilities).post(
-  // verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),
-  upload.single("image"),
-  facilitiesController.createNewFacility
-);
-// .put(
-//   verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),
-//   roomsController.updateRoom
-// )
+router
+  .route("/")
+  .get(facilitiesController.getAllFacilities)
+  .post(
+    // verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),
+    upload.single("image"),
+    facilitiesController.createNewFacility
+  )
+  .put(
+    // verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),
+    facilitiesController.updateFacility
+  );
 
 router
   .route("/:id")
   .get(facilitiesController.getFacility)
   .delete(facilitiesController.deleteFacility);
 
-router.route("/images/:id").get(facilitiesController.getFacilityImage);
+router
+  .route("/images/:id")
+  .get(facilitiesController.getFacilityImage)
+  .put(upload.single("image"), facilitiesController.updateFacilityImage);
 
 module.exports = router;
