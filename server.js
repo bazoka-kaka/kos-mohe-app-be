@@ -49,6 +49,7 @@ app.use("/users", require("./routes/api/users"));
 app.use("/facilities", require("./routes/api/facilities"));
 app.use("/orders", require("./routes/api/orders"));
 app.use("/notifications", require("./routes/api/notifications"));
+app.use("/discounts", require("./routes/api/discounts"));
 app.use(verifyJWT);
 
 app.all("*", (req, res) => {
